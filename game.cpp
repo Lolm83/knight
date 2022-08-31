@@ -30,24 +30,37 @@ namespace Tmpl8
 
 	}
 
-	Hero player(33, 33, RUNL, LEFT);
-
+	Hero player(33, 300, RUNL, LEFT);
+	Sprite test(new Surface("assets/ball.png"),1);
+	int last_input;
 	void Game::Tick(float dt)
 	{
 		screen->Clear(0x000000);
+		
+		test.Draw(screen, 33, 33);
+		test.Draw(screen, 333, 333);
 
-		if (GetAsyncKeyState(VK_LEFT))
-			player.Input(RUNL, LEFT);
-
-		else if (GetAsyncKeyState(VK_RIGHT)) 
-			player.Input(RUN, RIGHT);
-
-		else if (GetAsyncKeyState(VK_SPACE))
+		// Handling Inputs
+		if (!player.m_acting)
 		{
-			if (player.m_direction == RIGHT)
-				player.Input(ATTACK, RIGHT);
+			if (GetAsyncKeyState(VK_LEFT))
+				player.Input(RUN, LEFT); 
+
+			else if (GetAsyncKeyState(VK_RIGHT))
+				player.Input(RUN, RIGHT);
+
+			else if (GetAsyncKeyState(VK_SPACE))
+			{
+				if (player.m_direction == RIGHT)
+					player.Input(ATTACK, RIGHT);
+				else
+					player.Input(ATTACK, LEFT);
+			}
+			else if (player.m_direction == RIGHT)
+				player.Input(IDLE, RIGHT);
 			else
-				player.Input(ATTACKL, LEFT);
+				player.Input(IDLE, LEFT);
+			
 		}
 		player.Simulate(dt);
 		player.Animate(dt, screen);
