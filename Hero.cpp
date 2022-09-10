@@ -8,8 +8,6 @@ namespace Tmpl8
 	Sprite run(new Surface("assets/_Run.png"), 10);
 	Sprite runL(new Surface("assets/_RunL.png"), 10);
 
-	Sprite animation[6] = { idle, idleL, attack, attackL, run, runL };
-
 	// Status enum corresponds to animation in array
 	enum Status
 	{
@@ -18,7 +16,9 @@ namespace Tmpl8
 		ATTACK,
 		ATTACKL,
 		RUN,
-		RUNL
+		RUNL,
+		JUMP,
+		JUMPL
 	};
 	enum Direction
 	{
@@ -28,6 +28,10 @@ namespace Tmpl8
 
 	class Hero
 	{
+	private:
+		Sprite animation[6] = { idle, idleL, attack, attackL, run, runL };
+
+
 	public:
 		Hero(int x = 200, int y = 200, Status status = IDLE, Direction direction = RIGHT)
 		{
@@ -47,10 +51,11 @@ namespace Tmpl8
 		Status m_status;
 		Direction m_direction;
 		bool m_acting;
-
+		int m_x, m_y;
 
 	private:
-		int m_x, m_y;
+		
+		int m_space = 40;
 		float m_dx;
 		float m_aTime;
 		int m_aFrame;
@@ -101,11 +106,11 @@ namespace Tmpl8
 
 		if (m_direction == RIGHT) {
 			animation[m_status].SetFrame(m_aFrame);
-			animation[m_status].Draw(screen, m_x, m_y);
+			animation[m_status].Draw(screen, m_x - m_space, m_y);
 		}
 		else if (m_direction == LEFT) {
 			animation[m_status + 1].SetFrame(m_aFrame);
-			animation[m_status + 1].Draw(screen, m_x, m_y);
+			animation[m_status + 1].Draw(screen, m_x - m_space, m_y);
 		}
 	}
 

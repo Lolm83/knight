@@ -5,20 +5,13 @@
 #include <windows.h>
 #include <vector>
 
+
 #include "Hero.cpp"
+#include "Enemy.cpp"
+#include "Level.cpp"
 
 namespace Tmpl8
 {
-
-	class Enemy
-	{
-	public:
-
-
-	private:
-
-
-	};
 
 	void Game::Init()
 	{
@@ -30,25 +23,36 @@ namespace Tmpl8
 
 	}
 
-	Hero player(33, 300, RUNL, LEFT);
-	Sprite test(new Surface("assets/ball.png"),1);
+	Enemy richard(32, 384);
+	Hero player(320, 337, RUNL, LEFT);
+
+	Level level1(&map1, &backdrop);
+
 	int last_input;
 	void Game::Tick(float dt)
 	{
 		screen->Clear(0x000000);
-		
-		test.Draw(screen, 33, 33);
-		test.Draw(screen, 333, 333);
 
-		// Handling Inputs
+		// Handling Player Inputs
 		if (!player.m_acting)
 		{
+			// Key Inputs LEFT
 			if (GetAsyncKeyState(VK_LEFT))
-				player.Input(RUN, LEFT); 
-
+			{
+				if (GetAsyncKeyState(VK_SPACE))
+					player.Input(ATTACK, LEFT);
+				else 
+					player.Input(RUN, LEFT);
+			}
+			// Key Inputs RIGHT
 			else if (GetAsyncKeyState(VK_RIGHT))
-				player.Input(RUN, RIGHT);
-
+			{
+				if (GetAsyncKeyState(VK_SPACE))
+					player.Input(ATTACK, RIGHT);
+				else
+					player.Input(RUN, RIGHT);
+			}
+			// Neutral ATTACK
 			else if (GetAsyncKeyState(VK_SPACE))
 			{
 				if (player.m_direction == RIGHT)
@@ -56,14 +60,23 @@ namespace Tmpl8
 				else
 					player.Input(ATTACK, LEFT);
 			}
+			// else, IDLE
 			else if (player.m_direction == RIGHT)
 				player.Input(IDLE, RIGHT);
 			else
 				player.Input(IDLE, LEFT);
-			
 		}
+		
+
+		level1.DrawLevel(screen);
+
+		richard.Simulate(dt, &player);
+	
+
+		richard.Animate(dt, screen);
+
+
 		player.Simulate(dt);
 		player.Animate(dt, screen);
-	
 	}
 };

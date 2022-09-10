@@ -9,6 +9,8 @@
       <Filter>template code</Filter>
     </ClCompile>
     <ClCompile Include="Hero.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Level.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
