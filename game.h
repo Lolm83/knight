@@ -2,6 +2,11 @@
 
 namespace Tmpl8 {
 
+class Tile;
+class Level;
+class Hero;
+class Enemy;
+
 class Surface;
 class Game
 {
